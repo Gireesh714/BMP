@@ -1,4 +1,5 @@
 import * as XLSX from 'xlsx';
+import { calculateAmenityScore, calculateSafetyIndex } from '../utils/dataHelpers.js';
 
 export const SHEET_URL = '/BMP02 excelsheet.xlsx';
 
@@ -43,16 +44,13 @@ function findKey(row, predicate) {
 export function normalizeRow(row) {
   const normalized = { ...row };
 
-  const safetyKey = findKey(row, (keyName) => keyName.toLowerCase().includes('safety index'));
-  const amenityKey = findKey(row, (keyName) => keyName.toLowerCase().includes('amenity index'));
-
   SCORE_FIELDS.forEach((label) => {
     const sourceKey = findKey(row, (keyName) => keyName.toLowerCase().includes(label.toLowerCase()));
     normalized[label] = Number(row[sourceKey]) || 0;
   });
 
-  normalized.safetyIndex = Number(row[safetyKey]) || 0;
-  normalized.amenityIndex = Number(row[amenityKey]) || 0;
+  normalized.safetyIndex = calculateSafetyIndex(normalized);
+  normalized.amenityIndex = calculateAmenityScore(normalized);
   normalized.combinedScore = normalized.safetyIndex + normalized.amenityIndex;
 
   return normalized;
@@ -61,5 +59,17 @@ export function normalizeRow(row) {
 export function loadWorkbookFromBuffer(arrayBuffer) {
   const workbook = XLSX.read(arrayBuffer, { type: 'array' });
   const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-  return XLSX.utils.sheet_to_json(worksheet, { defval: '' }).map(normalizeRow);
+  const rows = XLSX.utils.sheet_to_json(worksheet, { defval: '' }).map(normalizeRow);
+
+  console.log(
+    'Sample stop scores:',
+    rows.slice(0, 3).map((row) => ({
+      stop: row['Stop Name'],
+      safetyIndex: Number(row.safetyIndex.toFixed(2)),
+      amenityScore: Number(row.amenityIndex.toFixed(2)),
+      combinedScore: Number(row.combinedScore.toFixed(2)),
+    })),
+  );
+
+  return rows;
 }

@@ -2,12 +2,20 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import ChartsPanel from './components/ChartsPanel.jsx';
 import DashboardErrorBoundary from './components/DashboardErrorBoundary.jsx';
 import DashboardHeader from './components/DashboardHeader.jsx';
+import Comparison from './components/Comparison.jsx';
+import ChartsSection from './components/ChartsSection.jsx';
+import AreaPieSection from './components/AreaPieSection.jsx';
 import FiltersBar from './components/FiltersBar.jsx';
+import MapPage from './components/MapPage.jsx';
+import ProjectOverview from './components/ProjectOverview.jsx';
+import Rankings from './components/Rankings.jsx';
+import ScoringSystem from './components/ScoringSystem.jsx';
 import StopDetails from './components/StopDetails.jsx';
 import StopsTable from './components/StopsTable.jsx';
 import SummaryPanel from './components/SummaryPanel.jsx';
 import { FIELD_MAP, METRIC_LABELS, SHEET_URL, loadWorkbookFromBuffer, SCORE_FIELDS } from './data/workbook.js';
 import { formatNumber, getCombinedScore, scoreColor } from './utils/format.js';
+import { getRouteAverages } from './utils/dataHelpers.js';
 import './App.css';
 
 function AppShell({
@@ -71,6 +79,7 @@ function AppShell({
   );
 
   const summarySource = filteredRows.length ? filteredRows : rows;
+  const routeAverages = useMemo(() => getRouteAverages(summarySource), [summarySource]);
 
   const summary = useMemo(() => {
     const total = summarySource.length;
@@ -149,12 +158,18 @@ function AppShell({
       <button className={page === 'insights' ? 'nav-btn active' : 'nav-btn'} onClick={() => setPage('insights')}>
         Insights
       </button>
+      <button className={page === 'map' ? 'nav-btn active' : 'nav-btn'} onClick={() => setPage('map')}>
+        Map
+      </button>
+      <button className={page === 'pie' ? 'nav-btn active' : 'nav-btn'} onClick={() => setPage('pie')}>
+        Pie Chart
+      </button>
     </nav>
   );
 
   return (
     <main className="app-shell">
-      <section className="preview-strip">
+      {/* <section className="preview-strip">
         {summarySource.slice(0, 3).map((row) => (
           <div key={row['Stop Name']} className="preview-chip">
             <strong>{row['Stop Name']}</strong>
@@ -163,17 +178,19 @@ function AppShell({
             </span>
           </div>
         ))}
-      </section>
+      </section> */}
 
       {nav}
 
       {page === 'overview' && (
         <>
           <DashboardHeader total={summary.total} avgSafety={summary.avgSafety} avgAmenity={summary.avgAmenity} formatNumber={formatNumber} />
-          <section className="page-note">
-            <h2>Overview</h2>
-            <p>Quick snapshot of the workbook. Use the buttons above to open the detailed list or insights views.</p>
-          </section>
+          <ProjectOverview totalStops={summary.total} routes={routeAverages.length} formatNumber={formatNumber} />
+          <ScoringSystem />
+          <ChartsSection data={summarySource} />
+          <Rankings data={summarySource} />
+          <Comparison routeAverages={routeAverages} />
+          
         </>
       )}
 
@@ -243,6 +260,10 @@ function AppShell({
           </section>
         </>
       )}
+
+      {page === 'map' && <MapPage data={summarySource} />}
+
+      {page === 'pie' && <AreaPieSection data={summarySource} />}
     </main>
   );
 }
