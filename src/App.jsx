@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ChartsPanel from './components/ChartsPanel.jsx';
 import DashboardErrorBoundary from './components/DashboardErrorBoundary.jsx';
 import DashboardHeader from './components/DashboardHeader.jsx';
@@ -35,7 +35,7 @@ function AppShell({
   page,
   setPage,
 }) {
-  const detailsRef = useRef(null);
+  const [showStopModal, setShowStopModal] = useState(false);
 
   const routes = useMemo(
     () => ['All', ...new Set(rows.map((row) => row['Route (Ahmedabad / Gandhinagar)']).filter(Boolean))],
@@ -51,12 +51,16 @@ function AppShell({
     const q = search.trim().toLowerCase();
     return rows.filter((row) => {
       const routeMatch = routeFilter === 'All' || row['Route (Ahmedabad / Gandhinagar)'] === routeFilter;
-      const areaMatch = areaFilter === 'All' || row['Area Type (Residential / Commercial / Institutional / Mixed)'] === areaFilter;
+      const rowArea = row['Area Type (Residential / Commercial / Institutional / Mixed)'];
+      const areaMatch =
+        areaFilter.length === 0 ||
+        areaFilter.includes('All') ||
+        areaFilter.includes(rowArea);
       const searchMatch =
         !q ||
         row['Stop Name']?.toLowerCase().includes(q) ||
         row['Route (Ahmedabad / Gandhinagar)']?.toLowerCase().includes(q) ||
-        row['Area Type (Residential / Commercial / Institutional / Mixed)']?.toLowerCase().includes(q);
+        rowArea?.toLowerCase().includes(q);
       return routeMatch && areaMatch && searchMatch;
     });
   }, [rows, routeFilter, areaFilter, search]);
@@ -211,35 +215,24 @@ function AppShell({
               setSearch('');
               setSortBy('combined');
               setRouteFilter('All');
-              setAreaFilter('All');
+              setAreaFilter(['All']);
               setSelectedStop(rows[0]?.['Stop Name'] || '');
               setPage('stops');
             }}
           />
 
-        
-            <section className="detail-grid single-column">
-              <StopsTable
-                rows={sortedRows}
-                selectedStop={selectedRow?.['Stop Name'] || ''}
-                onSelectStop={(stopName) => {
-                  setSelectedStop(stopName);
-                  detailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                formatNumber={formatNumber}
-                scoreColor={scoreColor}
-              />
-              <div ref={detailsRef}>
-                <StopDetails
-                  selectedRow={selectedRow}
-                  metricChart={metricChart}
-                  fieldMap={FIELD_MAP}
-                  formatNumber={formatNumber}
-                  getCombinedScore={getCombinedScore}
-                />
-              </div>
-            </section>
-          
+          <section className="detail-grid single-column">
+            <StopsTable
+              rows={sortedRows}
+              selectedStop={selectedRow?.['Stop Name'] || ''}
+              onSelectStop={(stopName) => {
+                setSelectedStop(stopName);
+                setShowStopModal(true);
+              }}
+              formatNumber={formatNumber}
+              scoreColor={scoreColor}
+            />
+          </section>
         </>
       )}
 
@@ -261,6 +254,23 @@ function AppShell({
         </>
       )}
 
+      {showStopModal && selectedRow && (
+        <div className="modal-overlay" onClick={() => setShowStopModal(false)}>
+          <div className="modal-card" onClick={(event) => event.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowStopModal(false)}>
+              ×
+            </button>
+            <StopDetails
+              selectedRow={selectedRow}
+              metricChart={metricChart}
+              fieldMap={FIELD_MAP}
+              formatNumber={formatNumber}
+              getCombinedScore={getCombinedScore}
+            />
+          </div>
+        </div>
+      )}
+
       {page === 'map' && <MapPage data={summarySource} />}
 
       {page === 'pie' && <AreaPieSection data={summarySource} />}
@@ -273,7 +283,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [routeFilter, setRouteFilter] = useState('All');
-  const [areaFilter, setAreaFilter] = useState('All');
+  const [areaFilter, setAreaFilter] = useState(['All']);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('combined');
   const [selectedStop, setSelectedStop] = useState('');

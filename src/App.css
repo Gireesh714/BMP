@@ -277,6 +277,149 @@
   overflow: hidden;
 }
 
+.graph-card {
+  overflow: visible;
+}
+
+.route-toggle {
+  display: inline-flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.toggle-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: transparent;
+  color: #cbd5e1;
+  font: inherit;
+  cursor: pointer;
+}
+
+.toggle-btn.active {
+  background: linear-gradient(90deg, #38bdf8, #2dd4bf);
+  color: #04111f;
+  font-weight: 700;
+}
+
+.graph-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.graph-stage {
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.52);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  min-height: 560px;
+}
+
+.graph-stage canvas {
+  display: block;
+}
+
+.graph-summary {
+  display: grid;
+  gap: 12px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(2, 6, 23, 0.68);
+  backdrop-filter: blur(10px);
+}
+
+.modal-card {
+  position: relative;
+  width: min(520px, 100%);
+  max-height: min(90vh, 760px);
+  border-radius: 24px;
+  padding: 24px;
+  background: rgba(11, 19, 36, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(248, 250, 252, 0.24);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  font-size: 1.4rem;
+  cursor: pointer;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+.modal-close:hover {
+  background: rgba(248, 250, 252, 0.16);
+}
+
+.modal-header h2 {
+  margin: 0 0 6px;
+  color: #f8fafc;
+}
+
+.modal-route {
+  margin: 0;
+  color: #7dd3fc;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.modal-stat,
+.modal-meta div {
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.74);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.modal-stat span,
+.modal-meta span {
+  display: block;
+  margin-bottom: 6px;
+  color: #94a3b8;
+  font-size: 0.82rem;
+}
+
+.modal-stat strong,
+.modal-meta strong {
+  color: #f8fafc;
+}
+
+.modal-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
 .pie-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.7fr);
@@ -510,6 +653,60 @@
   color: #cbd5e1;
 }
 
+.dropdown-checkbox {
+  position: relative;
+  width: 100%;
+  min-width: 300px;
+  max-width: 420px;
+}
+
+.dropdown-toggle {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.9);
+  color: #f8fafc;
+  padding: 14px 16px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dropdown-arrow {
+  margin-left: 16px;
+  color: #94a3b8;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 300px;
+  max-width: 360px;
+  width: 100%;
+  max-height: min(320px, 75vh);
+  overflow-y: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(2, 3, 5, 0.96);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+  z-index: 20;
+  padding: 12px;
+}
+
+.dropdown-menu {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.dropdown-menu::-webkit-scrollbar {
+  display: none;
+}
+
 .controls select {
   appearance: none;
   width: 100%;
@@ -528,6 +725,31 @@
   background: rgba(15, 23, 42, 0.9);
   color: #f8fafc;
   padding: 14px 16px;
+}
+
+.area-checkbox-list {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  max-height: 220px;
+  overflow-y: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.area-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.area-checkbox-item input {
+  accent-color: #38bdf8;
+  width: 18px;
+  height: 18px;
 }
 
 .insights-grid,
@@ -833,6 +1055,7 @@ tbody tr:hover,
   .hero,
   .insights-grid,
   .detail-grid,
+  .graph-layout,
   .controls,
   .preview-strip,
   .overview-grid,
@@ -874,9 +1097,19 @@ tbody tr:hover,
     align-items: flex-start;
   }
 
+  .graph-stage {
+    min-height: 440px;
+  }
+
   .summary-row {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .route-toggle,
+  .modal-grid,
+  .modal-meta {
+    grid-template-columns: 1fr;
   }
 
   .selected-meta,

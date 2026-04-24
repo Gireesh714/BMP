@@ -12,28 +12,7 @@ export default function ChartsPanel({ sortedRows, routeChart, topStopsChart }) {
 
   return (
     <section className="insights-grid">
-      <article className="insight-card wide">
-        <div className="card-heading">
-          <h2>Top stops by combined score</h2>
-          <span>Safety + amenity</span>
-        </div>
-        <div className="simple-bars">
-          {topRows.map((row) => (
-            <div className="simple-bar-row" key={row['Stop Name']}>
-              <div className="simple-bar-meta">
-                <strong>{chartLabel(row)}</strong>
-                <span>
-                  {row.safetyIndex.toFixed(2)} safety · {row.amenityIndex.toFixed(2)} amenity
-                </span>
-              </div>
-              <div className="simple-bar-track" aria-hidden="true">
-                <div className="simple-bar safety" style={{ width: barWidth(row.safetyIndex, 100) }} />
-                <div className="simple-bar amenity" style={{ width: barWidth(row.amenityIndex, 100) }} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </article>
+     
 
       <article className="insight-card">
         <div className="card-heading">

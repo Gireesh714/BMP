@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+
 export default function FiltersBar({
   search,
   setSearch,
@@ -11,6 +13,25 @@ export default function FiltersBar({
   areas,
   onReset,
 }) {
+  const [areaDropdownOpen, setAreaDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleDocumentClick(event) {
+      if (!dropdownRef.current || dropdownRef.current.contains(event.target)) {
+        return;
+      }
+      setAreaDropdownOpen(false);
+    }
+
+    if (areaDropdownOpen) {
+      document.addEventListener('mousedown', handleDocumentClick);
+      return () => document.removeEventListener('mousedown', handleDocumentClick);
+    }
+
+    return undefined;
+  }, [areaDropdownOpen]);
+
   return (
     <section className="controls">
       <label>
@@ -41,15 +62,50 @@ export default function FiltersBar({
           ))}
         </select>
       </label>
-      <label>
+      <label className="area-filter-label">
         <span>Area type</span>
-        <select value={areaFilter} onChange={(e) => setAreaFilter(e.target.value)}>
-          {areas.map((area) => (
-            <option key={area} value={area}>
-              {area}
-            </option>
-          ))}
-        </select>
+        <div className="dropdown-checkbox" ref={dropdownRef}>
+          <button
+            type="button"
+            className="dropdown-toggle"
+            onClick={() => setAreaDropdownOpen((open) => !open)}
+          >
+            Area type
+            <span className="dropdown-arrow">▾</span>
+          </button>
+          {areaDropdownOpen && (
+            <div className="dropdown-menu">
+              {areas.map((area) => (
+                <label key={area} className="area-checkbox-item">
+                  <input
+                    type="checkbox"
+                    value={area}
+                    checked={areaFilter.includes(area)}
+                    onChange={() => {
+                      if (area === 'All') {
+                        setAreaFilter(['All']);
+                        return;
+                      }
+
+                      const activeSelected = areaFilter.includes('All') ? [] : [...areaFilter];
+                      const nextSet = new Set(activeSelected);
+
+                      if (nextSet.has(area)) {
+                        nextSet.delete(area);
+                      } else {
+                        nextSet.add(area);
+                      }
+
+                      const next = [...nextSet];
+                      setAreaFilter(next.length === 0 ? ['All'] : next);
+                    }}
+                  />
+                  {area}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
       </label>
       <div className="filter-actions">
         <button type="button" className="reset-btn" onClick={onReset}>
