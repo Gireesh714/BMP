@@ -1125,3 +1125,92 @@ tbody tr:hover,
     flex-direction: column;
   }
 }
+
+/* Comparison Section Styles */
+.comparison-charts {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.chart-container {
+  background: rgba(15, 23, 42, 0.68);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chart-container.full-width {
+  max-width: 100%;
+}
+
+.chart-header h3 {
+  color: #f8fafc;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.chart-header p {
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 800px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 800px;
+}
+
+.chart-container.full-width {
+  width: 100%;
+}
+
+/* Custom Tooltip Styles */
+.custom-tooltip {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  max-width: 250px;
+}
+
+.tooltip-label {
+  color: #f8fafc;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  font-size: 0.875rem;
+}
+
+.tooltip-area,
+.tooltip-route {
+  color: #cbd5e1;
+  margin: 2px 0;
+  font-size: 0.75rem;
+}
+
+.custom-tooltip p {
+  margin: 4px 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    padding: 16px;
+  }
+
+  .chart-wrapper {
+    min-height: 400px;
+  }
+}

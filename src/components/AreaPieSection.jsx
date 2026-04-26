@@ -1,4 +1,5 @@
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import SafetyAmenityComparison from './SafetyAmenityComparison.jsx';
 
 const COLORS = [
   '#8b5cf6',
@@ -75,6 +76,8 @@ export default function AreaPieSection({ data }) {
           </div>
         </div>
       </div>
+
+      <SafetyAmenityComparison data={data} />
     </section>
   );
 }

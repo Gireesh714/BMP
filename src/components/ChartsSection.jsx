@@ -8,22 +8,22 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { getRouteComparison } from '../utils/dataHelpers.js';
+import { getRouteAverages } from '../utils/dataHelpers.js';
 
 export default function ChartsSection({ data }) {
-  const routeComparison = getRouteComparison(data);
+  const routeAverages = getRouteAverages(data);
 
-  const safetyChartData = [
-    { route: 'Ahmedabad', value: routeComparison.avgSafetyAhmedabad },
-    { route: 'Gandhinagar', value: routeComparison.avgSafetyGandhinagar },
-  ];
+  const safetyChartData = routeAverages.map((item) => ({
+    route: item.route,
+    value: Math.round(item.avgSafety),
+  }));
 
-  const amenityChartData = [
-    { route: 'Ahmedabad', value: routeComparison.avgAmenityAhmedabad },
-    { route: 'Gandhinagar', value: routeComparison.avgAmenityGandhinagar },
-  ];
+  const amenityChartData = routeAverages.map((item) => ({
+    route: item.route,
+    value: Math.round(item.avgAmenity),
+  }));
 
-  console.log('Route chart values', routeComparison);
+  console.log('Route chart values', routeAverages);
 
   return (
     <section className="insight-card section-block">

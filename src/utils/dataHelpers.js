@@ -59,23 +59,21 @@ export function getRouteAverages(data) {
   }));
 }
 
-export function getRouteComparison(data) {
-  const routeAverages = getRouteAverages(data);
-  const ahmedabad = routeAverages.find((item) => item.route === 'Ahmedabad') || {
-    route: 'Ahmedabad',
-    avgSafety: 0,
-    avgAmenity: 0,
-  };
-  const gandhinagar = routeAverages.find((item) => item.route === 'Gandhinagar') || {
-    route: 'Gandhinagar',
-    avgSafety: 0,
-    avgAmenity: 0,
-  };
+export function getAreaAverages(data) {
+  const grouped = data.reduce((acc, stop) => {
+    const area = stop['Area Type (Residential / Commercial / Institutional / Mixed)'] || 'Unknown';
+    if (!acc[area]) {
+      acc[area] = { area, count: 0, safety: 0, amenity: 0 };
+    }
+    acc[area].count += 1;
+    acc[area].safety += calculateSafetyIndex(stop);
+    acc[area].amenity += calculateAmenityScore(stop);
+    return acc;
+  }, {});
 
-  return {
-    avgSafetyAhmedabad: ahmedabad.avgSafety,
-    avgSafetyGandhinagar: gandhinagar.avgSafety,
-    avgAmenityAhmedabad: ahmedabad.avgAmenity,
-    avgAmenityGandhinagar: gandhinagar.avgAmenity,
-  };
+  return Object.values(grouped).map((item) => ({
+    ...item,
+    avgSafety: item.count ? item.safety / item.count : 0,
+    avgAmenity: item.count ? item.amenity / item.count : 0,
+  }));
 }
