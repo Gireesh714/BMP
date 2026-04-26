@@ -64,7 +64,7 @@ export default function AreaPieSection({ data }) {
           </ResponsiveContainer>
         </div>
         <div className="pie-legend-card">
-          <h3>Area Types</h3>
+          <h3>Area Types </h3>
           <div className="pie-legend-list">
             {areaDistribution.map((entry, index) => (
               <div className="pie-legend-item" key={entry.name}>
@@ -77,7 +77,7 @@ export default function AreaPieSection({ data }) {
         </div>
       </div>
 
-      <SafetyAmenityComparison data={data} />
+     
     </section>
   );
 }
