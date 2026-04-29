@@ -19,7 +19,7 @@ export const stopImageMap = {
   'Nehrunagar': 'nehrunagar.jpg',
   'Manekbaug': 'manekbhaug.jpg', // Spelling variant: "baug" → "bhaug"
   'Dharnidhar Derasar': 'dharnidhar-derasar.jpg',
-  'Anjali': 'anjali-brts.jpg',
+  'Anjali': 'anjali.jpg',
   'Chandranagar': 'chandranagar.jpg',
   'Khodiyarnagar': 'khodiyarnagar.jpg',
   'Danilimda Cross Roads': 'danilimda-cross-roads.jpg',

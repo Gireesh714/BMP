@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import './BusStopDesignAnalysis.css';
+import { getStopImagePath } from '../utils/stopImageMap';
 
 const stopDesignMap = {
   // ---------------- BRTS / Structured ----------------
@@ -108,10 +109,11 @@ export default function BusStopDesignAnalysis({ rows = [] }) {
     const stopEntries = stopKeys.map((key) => {
       const category = stopDesignMap[key] || 'minimal';
       const stopName = rowsByKey[key] || formatStopLabel(key);
+      const imagePath = getStopImagePath(stopName) || `/images/stops/${key}.jpg`;
       return {
         key,
         label: stopName,
-        image: `/images/stops/${key}.jpg`,
+        image: imagePath,
         category,
       };
     });
