@@ -168,7 +168,7 @@ function AppShell({
         Map
       </button>
       <button className={page === 'pie' ? 'nav-btn active' : 'nav-btn'} onClick={() => setPage('pie')}>
-        Pie Chart
+        Location of Bus Stops
       </button>
       <button className={page === 'design' ? 'nav-btn active' : 'nav-btn'} onClick={() => setPage('design')}>
         Bus Stop Design Analysis
