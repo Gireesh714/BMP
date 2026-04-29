@@ -1,0 +1,82 @@
+.insight-card {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 4px solid;
+}
+
+.insight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.insight-card.highest {
+  border-left-color: #10b981; /* green */
+}
+
+.insight-card.lowest {
+  border-left-color: #ef4444; /* red */
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.card-icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.card-content .stop-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.card-content .score {
+  font-size: 24px;
+  font-weight: 800;
+  color: #059669;
+  margin: 0 0 8px 0;
+}
+
+.card-content .explanation {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .insight-card {
+    padding: 12px;
+  }
+
+  .card-title {
+    font-size: 13px;
+  }
+
+  .stop-name {
+    font-size: 15px;
+  }
+
+  .score {
+    font-size: 20px;
+  }
+
+  .explanation {
+    font-size: 11px;
+  }
+}

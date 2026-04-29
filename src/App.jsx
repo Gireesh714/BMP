@@ -5,6 +5,7 @@ import DashboardHeader from './components/DashboardHeader.jsx';
 import Comparison from './components/Comparison.jsx';
 import ChartsSection from './components/ChartsSection.jsx';
 import AreaPieSection from './components/AreaPieSection.jsx';
+import BusStopDesignAnalysis from './components/BusStopDesignAnalysis.jsx';
 import FiltersBar from './components/FiltersBar.jsx';
 import MapPage from './components/MapPage.jsx';
 import ProjectOverview from './components/ProjectOverview.jsx';
@@ -13,6 +14,7 @@ import ScoringSystem from './components/ScoringSystem.jsx';
 import StopDetails from './components/StopDetails.jsx';
 import StopsTable from './components/StopsTable.jsx';
 import SummaryPanel from './components/SummaryPanel.jsx';
+import KeyInsightsSection from './components/KeyInsightsSection.jsx';
 import { FIELD_MAP, METRIC_LABELS, SHEET_URL, loadWorkbookFromBuffer, SCORE_FIELDS } from './data/workbook.js';
 import { formatNumber, getCombinedScore, scoreColor } from './utils/format.js';
 import { getRouteAverages } from './utils/dataHelpers.js';
@@ -168,6 +170,9 @@ function AppShell({
       <button className={page === 'pie' ? 'nav-btn active' : 'nav-btn'} onClick={() => setPage('pie')}>
         Pie Chart
       </button>
+      <button className={page === 'design' ? 'nav-btn active' : 'nav-btn'} onClick={() => setPage('design')}>
+        Bus Stop Design Analysis
+      </button>
     </nav>
   );
 
@@ -238,6 +243,7 @@ function AppShell({
 
       {page === 'insights' && (
         <>
+          <KeyInsightsSection data={summarySource} />
           <DashboardErrorBoundary>
             <ChartsPanel sortedRows={sortedRows} routeChart={routeChart} topStopsChart={topStopsChart} />
           </DashboardErrorBoundary>
@@ -274,6 +280,8 @@ function AppShell({
       {page === 'map' && <MapPage data={summarySource} />}
 
       {page === 'pie' && <AreaPieSection data={summarySource} />}
+
+      {page === 'design' && <BusStopDesignAnalysis rows={rows} />}
     </main>
   );
 }
